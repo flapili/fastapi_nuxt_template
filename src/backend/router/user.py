@@ -46,7 +46,7 @@ async def user_post(new_user: UserPost):
 @router.post("/login")
 async def login_user(response: Response, login_user: UserLogin, status_code=200):
     query = str(
-        select([user])
+        select([user.c.id])
         .where(user.c.username == bindparam("username"))
         .where(user.c.hashed_password == bindparam("hashed_password"))
     )
