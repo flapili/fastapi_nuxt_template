@@ -47,8 +47,8 @@ async def get_access_token(
 async def get_user(access_token: str = Depends(get_access_token)):
     query = str(
         select([session.c.user_id, user.c.username, user.c.email])
+        .select_from(user.join(session))
         .where(session.c.token == bindparam("token"))
-        .where(session.c.user_id == user.c.id)
     )
     result = await db.fetch_one(query=query, values={"token": access_token})
     if result is None:
