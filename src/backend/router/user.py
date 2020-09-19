@@ -9,8 +9,6 @@ import asyncpg.exceptions
 from sqlalchemy import select
 from sqlalchemy.sql import bindparam
 
-# from sqlalchemy import select
-
 from backend.core.auth import hash_password, get_user
 from backend.core.pydantic_models import ReturnedUser, UserLogin, UserPost, UserInDB
 from backend.db.connector import db
