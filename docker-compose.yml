@@ -38,6 +38,7 @@ services:
             - db-revision:/app/backend/db/migrations/versions
         environment:
             PSQL_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}
+            COOKIE_DOMAIN: ${COOKIE_DOMAIN}
         networks:
             - db
         ports:

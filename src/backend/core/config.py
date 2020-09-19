@@ -4,7 +4,7 @@ import logging
 from typing import Union, List, Any
 
 
-from pydantic import PostgresDsn, BaseSettings, Field
+from pydantic import PostgresDsn, RedisDsn, BaseSettings, Field  # noqa
 
 
 try:
@@ -31,7 +31,7 @@ class Config(BaseSettings):
 
     logging_lever: int = logging.DEBUG
     PSQL_URL: PostgresDsn
-    COOKIE_DOMAIN: str = "localhost:8081"
+    COOKIE_DOMAIN: str
 
 
 @lru_cache()
