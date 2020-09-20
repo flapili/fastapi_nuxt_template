@@ -8,7 +8,7 @@ from sqlalchemy import select
 from sqlalchemy.sql import bindparam
 
 from backend.core.pydantic_models import UserInDB
-from backend.db.connector import get_db
+from backend.db.connector import db
 from backend.db.models.session import session
 from backend.db.models.user import user
 
@@ -44,7 +44,7 @@ async def get_access_token(
         )
 
 
-async def get_user(access_token: str = Depends(get_access_token), db=Depends(get_db)):
+async def get_user(access_token: str = Depends(get_access_token)):
     query = str(
         select([session.c.user_id, user.c.username, user.c.email])
         .select_from(user.join(session))

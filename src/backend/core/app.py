@@ -5,7 +5,7 @@ from importlib import import_module
 
 from fastapi import FastAPI
 
-from backend.db.connector import get_db
+from backend.db.connector import db
 
 app = FastAPI()
 
@@ -20,11 +20,9 @@ for file in Path("./backend/router").glob("*.py"):
 
 @app.on_event("startup")
 async def startup():
-    db = await get_db()
     await db.connect()
 
 
 @app.on_event("shutdown")
 async def shutdown():
-    db = await get_db()
     await db.disconnect()

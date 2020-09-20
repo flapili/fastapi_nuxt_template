@@ -1,15 +1,14 @@
+console.log("------------------------------------------")
+console.log(process.env.BACKEND_URL)
+console.log("------------------------------------------")
 
 export default {
-    /*
-    ** Nuxt rendering mode
-    ** See https://nuxtjs.org/api/configuration-mode
-    */
-    mode: 'universal',
     /*
     ** Nuxt target
     ** See https://nuxtjs.org/api/configuration-target
     */
     target: 'server',
+    ssr: false,
     /*
     ** Headers of the page
     ** See https://nuxtjs.org/api/configuration-head
@@ -59,13 +58,22 @@ export default {
     modules: [
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
+        '@nuxtjs/proxy',
         '@nuxtjs/pwa',
     ],
     /*
     ** Axios module configuration
     ** See https://axios.nuxtjs.org/options
     */
-    axios: {},
+    axios: {
+        proxy: true,
+    },
+    proxy: {
+        '/api': {
+            target: process.env.BACKEND_URL,
+            pathRewrite: {'^/api' : ''}
+            }
+      },
     /*
     ** Build configuration
     ** See https://nuxtjs.org/api/configuration-build/

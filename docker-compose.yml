@@ -24,6 +24,8 @@ services:
         image: front_nuxt
         ports:
             - "8081:3000"
+        environment:
+            BACKEND_URL: ${BACKEND_URL}
 
 
     api:

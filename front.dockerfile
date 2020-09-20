@@ -6,8 +6,8 @@ ADD src/frontend/package.json /app
 
 RUN yarn
 
-RUN ["yarn", "run", "build"]
 ADD src/frontend /app
+RUN ["yarn", "run", "build", "--modern=client"]
 
 ENTRYPOINT ["yarn", "run", "start"]
 # FROM nginx:1.19.1-alpine

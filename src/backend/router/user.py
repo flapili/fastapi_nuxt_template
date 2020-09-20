@@ -11,7 +11,7 @@ from sqlalchemy.sql import bindparam
 
 from backend.core.auth import hash_password, get_user
 from backend.core.pydantic_models import ReturnedUser, UserLogin, UserPost, UserInDB
-from backend.db.connector import get_db
+from backend.db.connector import db
 from backend.db.models.user import user
 from backend.db.models.session import session
 
@@ -25,7 +25,7 @@ router = APIRouter()
     status_code=201,
     responses={409: {"description": "Username or email already used"}},
 )
-async def user_post(new_user: UserPost, db=Depends(get_db)):
+async def user_post(new_user: UserPost):
     values = new_user.dict()
 
     values["hashed_password"] = hash_password(new_user.password)
@@ -43,7 +43,7 @@ async def user_post(new_user: UserPost, db=Depends(get_db)):
 
 @router.post("/login")
 async def login_user(
-    response: Response, login_user: UserLogin, db=Depends(get_db), status_code=200
+    response: Response, login_user: UserLogin, status_code=200
 ):
     query = str(
         select([user.c.id])
