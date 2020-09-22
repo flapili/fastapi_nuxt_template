@@ -69,7 +69,7 @@ async def login_user(
 
     await db.execute(session.insert(), values={"user_id": user_id, "token": token})
     response.set_cookie(key="access_token", value=token)
-    return
+    return {"message": "ok"}
 
 
 @router.get("/me", response_model=UserInDB)
