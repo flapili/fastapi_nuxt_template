@@ -1,13 +1,15 @@
 <template>
-  <el-card class="center">
-    <el-form ref="form" :rules="rules" :model="form" @submit.prevent.native="login">
-        <el-form-item prop="username">
-            <el-input v-model="form.username" placeholder="nom d'utilisateur" @keypress.enter.native="login"></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-            <el-input v-model="form.password" show-password placeholder="mot de passe" @keypress.enter.native="login"></el-input>
-        </el-form-item>
-    </el-card>
+    <div class="background">
+        <el-card class="center">
+            <el-form ref="form" :rules="rules" :model="form" @submit.prevent.native="login">
+                <el-form-item prop="username">
+                    <el-input v-model="form.username" placeholder="nom d'utilisateur" @keypress.enter.native="login"></el-input>
+                </el-form-item>
+                <el-form-item prop="password">
+                    <el-input v-model="form.password" show-password placeholder="mot de passe" @keypress.enter.native="login"></el-input>
+                </el-form-item>
+            </el-card>
+    </div>
 </template>
 
 <script>
@@ -29,20 +31,33 @@
                 },
             }
         },
+        // mounted() {
+        //     document.querySelector('body').style.height = "100vh";
+        //     document.querySelector('body').style.width = "100%";
+        //     document.querySelector('body').style.backgroundColor = "dimgrey";
+        //     document.querySelector('body').style.margin = 0;
+        // },
 
         methods: {
             async login() {
                 try {
                     await this.$refs["form"].validate()
                     try {
-                        r = await this.$axios.post("api/login", {
-                            username: this.username,
-                            password: this.password,
+                        const r = await this.$axios.post(`${this.$config.api_url}/user/login`, {
+                            username: this.form.username,
+                            password: this.form.password,
                         })
-                        console.log(r)
+                        alert("login")
                     }
                     catch (err) {
                         console.log(err)
+                        if (!err.response || err.response.status >= 500) {
+                            this.$message.error('Serveurs injoignables. Réessayer plus tard');
+                        }
+                        else if (err.response.status === 400) {
+                            this.$message.error('Mauvais identifiants');
+                        }
+
                     }
                 }
                 catch(err) {} // invalid form
@@ -59,5 +74,12 @@
         position: absolute;
         min-width: fit-content;
     }
-
+    .background {
+        background-color: dimgrey;
+        height: 100vh;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 </style>
