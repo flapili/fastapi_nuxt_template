@@ -31,12 +31,6 @@
                 },
             }
         },
-        // mounted() {
-        //     document.querySelector('body').style.height = "100vh";
-        //     document.querySelector('body').style.width = "100%";
-        //     document.querySelector('body').style.backgroundColor = "dimgrey";
-        //     document.querySelector('body').style.margin = 0;
-        // },
 
         methods: {
             async login() {
