@@ -1,5 +1,4 @@
 # coding: utf-8
-
 from pathlib import Path
 from importlib import import_module
 
@@ -7,8 +6,7 @@ from fastapi import FastAPI
 
 from backend.db.connector import db
 
-app = FastAPI()
-
+app = FastAPI(root_path="/api/")
 
 for file in Path("./backend/router").glob("*.py"):
     if file.stem != "__init__":
