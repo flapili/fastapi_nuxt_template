@@ -69,7 +69,7 @@
         min-width: fit-content;
     }
     .background {
-        background-color: dimgrey;
+        background-color: #808080;
         height: 100vh;
         width: 100%;
         position: absolute;
