@@ -11,9 +11,8 @@ from sqlalchemy.sql import bindparam
 
 from backend.core.auth import hash_password, get_current_user
 from backend.core.pydantic_models import ReturnedUser, UserLogin, UserPost, UserInDB
-from backend.db.connector import db, get_redis_conn
+from backend.db.connector import db, get_redis
 from backend.db.models.user import user
-from backend.db.models.session import session
 
 
 router = APIRouter()
@@ -43,7 +42,10 @@ async def user_post(new_user: UserPost):
 
 @router.post("/login")
 async def login_user(
-    response: Response, login_user: UserLogin, status_code=200
+    response: Response,
+    login_user: UserLogin,
+    status_code=200,
+    redis=Depends(get_redis()),
 ):
     query = str(
         select([user.c.id])
@@ -67,7 +69,10 @@ async def login_user(
     user_id, *_ = result.values()
     token = secrets.token_urlsafe(128)[:64]
 
-    await db.execute(session.insert(), values={"user_id": user_id, "token": token})
+    #
+    # await redis.execute("set", token, user_id, "ex", 60 * 60 * 6)
+    await redis.set(token, user_id, expire=60 * 60 * 6)
+    # await db.execute(session.insert(), values={"user_id": user_id, "token": token})
     response.set_cookie(key="access_token", value=token)
     return {"message": "ok"}
 

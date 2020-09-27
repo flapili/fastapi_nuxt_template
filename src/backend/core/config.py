@@ -1,7 +1,8 @@
 import os
+from enum import IntEnum
 from functools import lru_cache
 import logging
-from typing import Union, List, Any
+from typing import Union, List
 
 
 from pydantic import PostgresDsn, RedisDsn, BaseSettings, Field
@@ -15,6 +16,10 @@ except AttributeError:
 
 if workers < 2:
     workers = 2
+
+
+class redisDBenum(IntEnum):
+    session = 0
 
 
 class GunicornConfig(BaseSettings):
@@ -33,11 +38,12 @@ class Config(BaseSettings):
     PSQL_URL: PostgresDsn
     REDIS_URL: RedisDsn
     COOKIE_DOMAIN: str
+    session_ttl: int = 60 * 60 * 6
 
 
 @lru_cache()
-def get_config(*args: Any, **kwargs: Any) -> Config:
-    return Config(*args, **kwargs)
+def get_config() -> Config:
+    return Config()
 
 
-config: Config = get_config()
+# config: Config = get_config()

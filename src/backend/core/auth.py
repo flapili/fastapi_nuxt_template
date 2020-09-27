@@ -8,8 +8,8 @@ from sqlalchemy import select
 from sqlalchemy.sql import bindparam
 
 from backend.core.pydantic_models import UserInDB
-from backend.db.connector import db
-from backend.db.models.session import session
+from backend.core.config import get_config, redisDBenum
+from backend.db.connector import db, get_redis
 from backend.db.models.user import user
 
 access_token_query = APIKeyQuery(name="access_token", auto_error=False)
@@ -44,18 +44,28 @@ async def get_access_token(
         )
 
 
-async def get_current_user(access_token: str = Depends(get_access_token)):
-    query = str(
-        select([session.c.user_id, user.c.username, user.c.email])
-        .select_from(user.join(session))
-        .where(session.c.token == bindparam("token"))
-    )
-    result = await db.fetch_one(query=query, values={"token": access_token})
-    if result is None:
+async def get_current_user(
+    access_token: str = Depends(get_access_token),
+    config=Depends(get_config),
+    redis=Depends(get_redis(redisDBenum.session.value)),
+):
+    user_id = await redis.get(access_token)
+    if user_id is None:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
 
-    user_id, username, email = result.values()
+    user_id = int(user_id)  # cast in int because redis stock int as bytes
+    query = str(
+        select([user.c.username, user.c.email]).where(user.c.id == bindparam("user_id"))
+    )
+    result = await db.fetch_one(query=query, values={"user_id": user_id})
+    if result is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Could not validate credentials",
+        )
+    await redis.expire(access_token, config.session_ttl)
+    username, email = result.values()
     return UserInDB(id=user_id, username=username, email=email)
