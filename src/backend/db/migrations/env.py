@@ -9,9 +9,9 @@ from alembic import context
 
 sys.path.append(str(Path.cwd().parent))
 
-from backend.core.config import config as app_config  # noqa: E402
+from backend.core.config import get_config  # noqa: E402
 
-
+app_config = get_config()
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config  # pylint: disable=no-member
