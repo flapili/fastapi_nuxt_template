@@ -4,22 +4,22 @@ import logging
 from typing import Union, List, Any
 
 
-from pydantic import PostgresDsn, RedisDsn, BaseSettings, Field  # noqa
+from pydantic import PostgresDsn, RedisDsn, BaseSettings, Field
 
 
 try:
-    cpu_core: int = len(os.sched_getaffinity(0))
+    workers: int = len(os.sched_getaffinity(0))
 except AttributeError:
     import multiprocessing
-    cpu_core: int = multiprocessing.cpu_count()
+    workers: int = multiprocessing.cpu_count()
 
-if cpu_core < 2:
-    cpu_core = 2
+if workers < 2:
+    workers = 2
 
 
 class GunicornConfig(BaseSettings):
     PORT: int = Field(80, gt=0, lt=2 ** 16)
-    WORKER: int = Field(cpu_core, gt=1)
+    WORKER: int = Field(workers, gt=1)
     WORKER_CLASS: str = "uvicorn.workers.UvicornWorker"
     BIND: Union[str, List[str]] = ":80"
     WORKER_TMP_DIR: str = "/dev/shm"
@@ -31,6 +31,7 @@ class Config(BaseSettings):
 
     logging_lever: int = logging.DEBUG
     PSQL_URL: PostgresDsn
+    REDIS_URL: RedisDsn
     COOKIE_DOMAIN: str
 
 

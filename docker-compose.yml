@@ -29,8 +29,6 @@ services:
 
 
     api:
-        depends_on:
-            - db
         build:
             context: .
             dockerfile: api.dockerfile
@@ -40,13 +38,17 @@ services:
             - db-revision:/app/backend/db/migrations/versions
         environment:
             PSQL_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}
+            REDIS_URL: redis://redis/0
             COOKIE_DOMAIN: ${COOKIE_DOMAIN}
+            API_ROOT_PATH: ${API_ROOT_PATH}
         networks:
             - db
+            - redis
         ports:
             - "8080:80"
         depends_on:
             - db
+            - redis
         logging:
             driver: "json-file"
             options:
@@ -71,8 +73,16 @@ services:
                 max-size: "200k"
                 max-file: "10"
 
+
+    redis:
+        image: redis
+        networks:
+            - redis
+
+
 networks:
     db:
+    redis:
     
 volumes:
     db-data:
