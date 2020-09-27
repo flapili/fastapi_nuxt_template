@@ -38,7 +38,7 @@ services:
             - db-revision:/app/backend/db/migrations/versions
         environment:
             PSQL_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}
-            REDIS_URL: redis://redis/0
+            REDIS_URL: redis://redis
             COOKIE_DOMAIN: ${COOKIE_DOMAIN}
             API_ROOT_PATH: ${API_ROOT_PATH}
         networks:
