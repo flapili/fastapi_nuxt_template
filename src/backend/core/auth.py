@@ -44,7 +44,7 @@ async def get_access_token(
         )
 
 
-async def get_user(access_token: str = Depends(get_access_token)):
+async def get_current_user(access_token: str = Depends(get_access_token)):
     query = str(
         select([session.c.user_id, user.c.username, user.c.email])
         .select_from(user.join(session))

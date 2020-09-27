@@ -9,9 +9,9 @@ import asyncpg.exceptions
 from sqlalchemy import select
 from sqlalchemy.sql import bindparam
 
-from backend.core.auth import hash_password, get_user
+from backend.core.auth import hash_password, get_current_user
 from backend.core.pydantic_models import ReturnedUser, UserLogin, UserPost, UserInDB
-from backend.db.connector import db
+from backend.db.connector import db, get_redis_conn
 from backend.db.models.user import user
 from backend.db.models.session import session
 
@@ -73,5 +73,5 @@ async def login_user(
 
 
 @router.get("/me", response_model=UserInDB)
-async def me(user=Depends(get_user)):
+async def me(user=Depends(get_current_user)):
     return user
