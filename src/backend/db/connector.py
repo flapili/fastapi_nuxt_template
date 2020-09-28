@@ -4,7 +4,7 @@ from fastapi import Depends
 import aioredis
 from databases import Database
 
-from backend.core.setting import Setting, get_setting
+from core.setting import Setting, get_setting
 
 
 db = Database(get_setting().PSQL_URL)

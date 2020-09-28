@@ -7,10 +7,10 @@ from fastapi.security.api_key import APIKeyQuery, APIKeyCookie, APIKeyHeader
 from sqlalchemy import select
 from sqlalchemy.sql import bindparam
 
-from backend.core.pydantic_models import UserInDB
-from backend.core.setting import get_setting, redisDBenum
-from backend.db.connector import db, get_redis
-from backend.db.models.user import user
+from core.pydantic_models import UserInDB
+from core.setting import get_setting, redisDBenum
+from db.connector import db, get_redis
+from db.models.user import user
 
 access_token_query = APIKeyQuery(name="access_token", auto_error=False)
 access_token_header = APIKeyHeader(name="access_token", auto_error=False)

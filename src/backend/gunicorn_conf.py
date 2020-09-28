@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from backend.core.setting import get_setting
+from core.setting import get_setting
 
 workers = get_setting().gunicorn.WORKER
 worker_class = get_setting().gunicorn.WORKER_CLASS

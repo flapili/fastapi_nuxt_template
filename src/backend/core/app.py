@@ -4,7 +4,7 @@ from importlib import import_module
 
 from fastapi import FastAPI
 
-from backend.db.connector import db
+from db.connector import db
 
 app = FastAPI(root_path="/api/")
 

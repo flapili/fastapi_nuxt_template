@@ -35,7 +35,7 @@ services:
             target: api
         image: fastapi
         volumes:
-            - db-revision:/app/backend/db/migrations/versions
+            - db-revision:/app/db/migrations/versions
         environment:
             PSQL_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}
             REDIS_URL: redis://redis

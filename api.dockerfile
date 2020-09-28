@@ -13,9 +13,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /app
 # ADD src/alembic.ini /app/alembic.ini
-ADD src/backend /app/backend
+ADD src/backend .
 
-ENTRYPOINT ["gunicorn", "backend.core.app:app", "-c", "backend/gunicorn_conf.py"]
+# ENTRYPOINT ["gunicorn", "core.app:app"]
+ENTRYPOINT ["gunicorn", "core.app:app", "-c", "gunicorn_conf.py"]
 
 # EXPOSE 8080
 

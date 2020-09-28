@@ -9,10 +9,10 @@ import asyncpg.exceptions
 from sqlalchemy import select
 from sqlalchemy.sql import bindparam
 
-from backend.core.auth import hash_password, get_current_user
-from backend.core.pydantic_models import ReturnedUser, UserLogin, UserPost, UserInDB
-from backend.db.connector import db, get_redis
-from backend.db.models.user import user
+from core.auth import hash_password, get_current_user
+from core.pydantic_models import ReturnedUser, UserLogin, UserPost, UserInDB
+from db.connector import db, get_redis
+from db.models.user import user
 
 
 router = APIRouter()

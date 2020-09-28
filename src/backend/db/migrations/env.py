@@ -7,9 +7,9 @@ from sqlalchemy import pool
 
 from alembic import context
 
-sys.path.append(str(Path.cwd().parent))
+sys.path.append(str(Path.cwd()))
 
-from backend.core.setting import get_setting  # noqa: E402
+from core.setting import get_setting  # noqa: E402
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -24,8 +24,8 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from backend.db import models  # noqa: F401, E402
-from backend.db.metadata import metadata  # noqa: E402
+from db import models  # noqa: F401, E402
+from db.metadata import metadata  # noqa: E402
 
 target_metadata = metadata
 
