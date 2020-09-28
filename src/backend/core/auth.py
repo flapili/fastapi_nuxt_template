@@ -8,7 +8,7 @@ from sqlalchemy import select
 from sqlalchemy.sql import bindparam
 
 from backend.core.pydantic_models import UserInDB
-from backend.core.config import get_config, redisDBenum
+from backend.core.setting import get_setting, redisDBenum
 from backend.db.connector import db, get_redis
 from backend.db.models.user import user
 
@@ -46,7 +46,7 @@ async def get_access_token(
 
 async def get_current_user(
     access_token: str = Depends(get_access_token),
-    config=Depends(get_config),
+    setting=Depends(get_setting),
     redis=Depends(get_redis(redisDBenum.session.value)),
 ):
     user_id = await redis.get(access_token)
@@ -66,6 +66,6 @@ async def get_current_user(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
-    await redis.expire(access_token, config.session_ttl)
+    await redis.expire(access_token, setting.session_ttl)
     username, email = result.values()
     return UserInDB(id=user_id, username=username, email=email)

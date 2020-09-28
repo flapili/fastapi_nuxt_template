@@ -4,18 +4,18 @@ from fastapi import Depends
 import aioredis
 from databases import Database
 
-from backend.core.config import Config, get_config
+from backend.core.setting import Setting, get_setting
 
 
-db = Database(get_config().PSQL_URL)
+db = Database(get_setting().PSQL_URL)
 
 
 class get_redis:
     def __init__(self, db: int = 0):
         self.db = db
 
-    async def __call__(self, config: Config = Depends(get_config)):
-        redis_conn = await aioredis.create_redis(config.REDIS_URL, db=self.db)
+    async def __call__(self, setting: Setting = Depends(get_setting)):
+        redis_conn = await aioredis.create_redis(setting.REDIS_URL, db=self.db)
         try:
             yield redis_conn
         finally:

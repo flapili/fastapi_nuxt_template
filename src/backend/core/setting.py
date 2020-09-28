@@ -22,7 +22,7 @@ class redisDBenum(IntEnum):
     session = 0
 
 
-class GunicornConfig(BaseSettings):
+class GunicornSetting(BaseSettings):
     PORT: int = Field(80, gt=0, lt=2 ** 16)
     WORKER: int = Field(workers, gt=1)
     WORKER_CLASS: str = "uvicorn.workers.UvicornWorker"
@@ -31,8 +31,8 @@ class GunicornConfig(BaseSettings):
     LOG_FILE: str = "-"
 
 
-class Config(BaseSettings):
-    gunicorn: GunicornConfig = GunicornConfig()
+class Setting(BaseSettings):
+    gunicorn: GunicornSetting = GunicornSetting()
 
     logging_lever: int = logging.DEBUG
     PSQL_URL: PostgresDsn
@@ -42,5 +42,5 @@ class Config(BaseSettings):
 
 
 @lru_cache()
-def get_config() -> Config:
-    return Config()
+def get_setting() -> Setting:
+    return Setting()
