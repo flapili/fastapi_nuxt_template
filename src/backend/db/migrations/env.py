@@ -13,7 +13,7 @@ from core.setting import get_setting  # noqa: E402
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
-config = context.config  # pylint: disable=no-member
+config = context.config
 config.set_main_option("sqlalchemy.url", str(get_setting().PSQL_URL))
 
 # Interpret the config file for Python logging.
