@@ -8,7 +8,7 @@ from db.connector import db
 
 app = FastAPI(root_path="/api/")
 
-for file in Path("./backend/router").glob("*.py"):
+for file in Path("./router").glob("*.py"):
     if file.stem != "__init__":
         module = import_module(".".join(file.parts[:-1] + (file.stem,)))
         app.include_router(
