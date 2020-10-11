@@ -69,10 +69,7 @@ async def login_user(
     user_id, *_ = result.values()
     token = secrets.token_urlsafe(128)[:64]
 
-    #
-    # await redis.execute("set", token, user_id, "ex", 60 * 60 * 6)
     await redis.set(token, user_id, expire=60 * 60 * 6)
-    # await db.execute(session.insert(), values={"user_id": user_id, "token": token})
     response.set_cookie(
         key="access_token", value=token, secure=True, samesite="Lax", httponly=True,
     )
